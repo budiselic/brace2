@@ -15,10 +15,10 @@
   "homepage": "https://github.com/budiselic/brace2",
   "devDependencies": {
     "browserify": "~4.2.3",
-    "opener": "~1.3.0",
-    "shelljs": "~0.2.6",
-    "tape": "~4.0.3",
-    "uglify-js": "~2.2.5"
+    "opener": "~1.5.2",
+    "shelljs": "~0.8.5",
+    "tape": "~4.17.0",
+    "uglify-js": "~2.8.29"
   },
   "keywords": [
     "ace",
