@@ -1,98 +1,124 @@
-# brace
+# brace2
 
-[browserify](https://github.com/substack/node-browserify) compatible version of the [ace editor](http://ajaxorg.github.io/ace/).
+[![npm version](https://img.shields.io/npm/v/brace2.svg)](https://www.npmjs.com/package/brace2)
+[![npm downloads](https://img.shields.io/npm/dm/brace2.svg)](https://www.npmjs.com/package/brace2)
+[![license](https://img.shields.io/npm/l/brace2.svg)](https://github.com/budiselic/brace2#license)
 
-[![browser support](https://ci.testling.com/thlorenz/brace.png)](https://ci.testling.com/thlorenz/brace)
+Browserify-compatible packaging of [Ace Editor](https://ace.c9.io/) with its
+Web Workers inlined into the bundle. `brace2` is a maintained fork of
+[`brace`](https://github.com/thlorenz/brace); use the `brace2` package name in
+imports, while Ace's runtime module IDs remain under the `ace/` namespace.
 
-***This badge shows which browsers support annotations, however the editor itself works in pretty much every browser.***
-
-[![screenshot](assets/brace.png)](http://thlorenz.github.io/brace/)
-*[Try it in your browser](http://thlorenz.github.io/brace/)*
+This release packages Ace `1.2.9`. It has no runtime npm dependencies and ships
+TypeScript declarations.
 
 ## Installation
 
-    npm install brace
+```sh
+npm install brace2
+```
 
-## Example
+## Quick start
+
+Load the editor plus the mode and theme you want to use:
 
 ```js
-var ace = require('brace');
-require('brace/mode/javascript');
-require('brace/theme/monokai');
+var ace = require('brace2');
+require('brace2/mode/javascript');
+require('brace2/theme/monokai');
 
-var editor = ace.edit('javascript-editor');
-editor.getSession().setMode('ace/mode/javascript');
+var editor = ace.edit('editor');
+editor.session.setMode('ace/mode/javascript');
 editor.setTheme('ace/theme/monokai');
+editor.setValue('const greeting = "Hello from brace2";');
 ```
 
-Include the above as an **entry** in your browserify build, add a `<div id="javascript-editor"></div>` to your html page and
-a JavaScript editor will appear.
+Add a target element with an explicit size:
 
-This editor will show error/warning annotations if your browser supports WebWorkers
-created via a blob URL (see testling support badge on top).
+```html
+<div id="editor"></div>
 
-Please consult the [detailed example](https://github.com/thlorenz/brace/tree/master/example) for more information.
+<style>
+  #editor {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+```
 
-## Why not just use ace?
+Use the JavaScript file above as an entry in your Browserify build:
 
-The ace editor creates the [WebWorker](http://www.html5rocks.com/en/tutorials/workers/basics/) via a worker script url.
-This requires the worker scripts to reside on your server and forces you to host the ace editor on your server as well.
+```sh
+npx browserify app.js --outfile bundle.js
+```
 
-While that is ok in most cases, it prevents you from providing a fully working ace editor package.
+Modes and themes are registered by their side-effect imports. Their Ace IDs
+still start with `ace/`, which is why `setMode` and `setTheme` use
+`ace/mode/javascript` and `ace/theme/monokai`.
 
-With brace, you have two options:
+## TypeScript
 
-- include brace itself when browserifying your app to get a fully working ace editor included with your bundle (no other
-  external scripts needed)
-- create the bundle as explained above and provide it to others so they can include it in their html page simply via a
-  script tag
-
-## What if my browser doesn't support it?
-
-If brace is unable to inline the web worker, it just falls back to provide the ace editor without annotation support.
-This means the editor is fully functional, but doesn't display errors/warnings on the left side.
-
-As far as I understand, the original ace editor behaves in exactly the same way.
-
-## How does it work?
-
-brace has an [update script](https://github.com/thlorenz/brace/blob/master/build/update.js) which automatically pulls
-down the [ace builds](https://github.com/ajaxorg/ace-builds) and refactors them to provide the following:
-
-- inline all supported workers
-- automatically require the workers that a 'mode' (language) depends on inside the mode file itself
-- provide the modes and themes at the same paths that ace's `setMode` and `setTheme` use (just replace 'ace' with
-  'brace') as seen in the above example
-
-## Supported Workers
-
-All workers included with ace are supported, except `php` and `xquery`, mainly because I wasn't able to properly
-stringify their code (any help with that is appreciated).
-
-## Can I use it with TypeScript?
-
-Yes, brace includes modular type definitions so you can do normal import statements and type safety checking
-with TypeScript. The example above becomes:
+The package exposes declarations through `package.json`; no separate
+`@types` package is needed.
 
 ```ts
-import * as ace from 'brace';
-import 'brace/mode/javascript';
-import 'brace/theme/monokai';
+import * as ace from 'brace2';
+import 'brace2/mode/typescript';
+import 'brace2/theme/monokai';
 
-const editor = ace.edit('javascript-editor');
-editor.getSession().setMode('ace/mode/javascript');
+const editor = ace.edit('editor');
+editor.session.setMode('ace/mode/typescript');
 editor.setTheme('ace/theme/monokai');
 ```
 
-brace exposes these type definitions in `package.json`, so they are available when you do `npm install brace`.
-You do not need an additional install step or another tool to install these definitions.
+## Optional modules
 
-These type definitions are kept up to date in the same way as the rest of brace. There is an
-[update script](https://github.com/thlorenz/brace/blob/master/build/update-ts.js) which automatically pulls
-down the [DefinitelyTyped definition](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/ace/index.d.ts)
-and refactors it to be modular rather than global.
+Import only the modules your editor needs:
 
-## Test
+```js
+require('brace2/ext/language_tools');
+require('brace2/keybinding/vim');
+require('brace2/mode/json');
+require('brace2/snippets/javascript');
+require('brace2/theme/dracula');
+```
 
-    npm explore brace
-    npm test
+The package contains:
+
+- language modes in `brace2/mode/*`
+- themes in `brace2/theme/*`
+- extensions in `brace2/ext/*`
+- keybindings in `brace2/keybinding/*`
+- snippets in `brace2/snippets/*`
+
+## Inlined workers
+
+Ace normally loads worker scripts from URLs that must be hosted separately.
+`brace2` packages supported workers into JavaScript modules and connects them
+to their corresponding modes, so syntax checking works without copying worker
+files to your server.
+
+Workers for CoffeeScript, CSS, HTML, JavaScript, JSON, Lua, and XML are inlined.
+PHP and XQuery workers are not inlined. If a browser cannot create a worker from
+a Blob URL, the editor remains usable but background annotations are disabled.
+
+## Development
+
+Development requires Node.js 18 or newer.
+
+```sh
+npm install
+npm run build:test
+```
+
+`npm test` also builds the browser test bundle and opens the test page in your
+default browser. `npm run update` regenerates the package from the pinned Ace
+build and refreshes its TypeScript declarations; review generated changes
+before committing them.
+
+## License
+
+The Brace integration code is available under the [MIT license](LICENSE).
+Bundled files derived from Ace Editor are available under the BSD 3-Clause
+license; see [third-party licenses](THIRD_PARTY_LICENSES.md). The distributed
+package is therefore marked `MIT AND BSD-3-Clause`.

@@ -1,24 +1,39 @@
 {
   "name": "brace2",
-  "version": "0.12.2",
-  "description": "browserify compatible version of the ace editor.",
+  "version": "0.12.3",
+  "description": "Browserify-compatible Ace Editor with inlined Web Workers and TypeScript declarations",
   "main": "index.js",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
+  "files": [
+    "ext/",
+    "keybinding/",
+    "mode/",
+    "snippets/",
+    "theme/",
+    "worker/",
+    "index.js",
+    "index.d.ts",
+    "THIRD_PARTY_LICENSES.md"
+  ],
   "scripts": {
     "update": "(cd build && node ./update && node ./update-ts)",
-    "test": "browserify test/*.js > test/bundle.js --debug && opener test/index.html"
+    "build:test": "browserify test/error-annotations.js --debug --outfile test/bundle.js",
+    "test": "npm run build:test && opener test/index.html"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/budiselic/brace2.git"
+    "url": "git+https://github.com/budiselic/brace2.git"
   },
   "homepage": "https://github.com/budiselic/brace2",
+  "bugs": {
+    "url": "https://github.com/budiselic/brace2/issues"
+  },
   "devDependencies": {
-    "browserify": "~4.2.3",
-    "opener": "~1.5.2",
-    "shelljs": "~0.8.5",
-    "tape": "~4.17.0",
-    "uglify-js": "~2.8.29"
+    "browserify": "^17.0.1",
+    "opener": "^1.5.2",
+    "shelljs": "^0.10.0",
+    "tape": "^5.10.2",
+    "uglify-js": "^3.19.3"
   },
   "keywords": [
     "ace",
@@ -27,30 +42,13 @@
     "package",
     "bundle",
     "inline",
-    "browserify"
+    "browserify",
+    "web-worker",
+    "typescript"
   ],
   "author": {
     "name": "Antonio Budiselic",
     "url": "https://github.com/budiselic"
   },
-  "license": "MIT",
-  "engine": {
-    "node": ">=0.6"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/8..latest",
-      "firefox/21..latest",
-      "firefox/nightly",
-      "chrome/26..latest",
-      "chrome/canary",
-      "opera/12..latest",
-      "opera/next",
-      "safari/5.1..latest",
-      "ipad/6.0..latest",
-      "iphone/6.0..latest",
-      "android-browser/4.2..latest"
-    ]
-  }
+  "license": "MIT AND BSD-3-Clause"
 }
