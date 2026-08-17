@@ -8,11 +8,10 @@ var path   =  require('path')
 
 
 function minify(code) {
-  var compressor = uglify.Compressor()
-    , ast = uglify.parse(code);
+  var result = uglify.minify(code);
 
-  ast.figure_out_scope();
-  return ast.transform(compressor).print_to_string();
+  if (result.error) throw result.error;
+  return result.code;
 }
 
 module.exports = function () {
@@ -33,4 +32,3 @@ module.exports = function () {
       fs.writeFileSync(dst, code, 'utf-8');
     });
 };
-
