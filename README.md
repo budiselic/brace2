@@ -91,6 +91,9 @@ The package contains:
 - keybindings in `brace2/keybinding/*`
 - snippets in `brace2/snippets/*`
 
+See the [complete example](https://github.com/budiselic/brace2/tree/master/example)
+for a multi-editor Browserify setup.
+
 ## Inlined workers
 
 Ace normally loads worker scripts from URLs that must be hosted separately.
@@ -104,17 +107,17 @@ a Blob URL, the editor remains usable but background annotations are disabled.
 
 ## Development
 
-Development requires Node.js 18 or newer.
+Development requires a supported Node.js release (Node.js 22 or newer).
 
 ```sh
 npm install
-npm run build:test
+npm test
 ```
 
-`npm test` also builds the browser test bundle and opens the test page in your
-default browser. `npm run update` regenerates the package from the pinned Ace
-build and refreshes its TypeScript declarations; review generated changes
-before committing them.
+`npm test` builds the browser test bundle. Run `npm run test:browser` to build
+the bundle and open the test page in your default browser. `npm run update`
+regenerates the package from the pinned Ace build and refreshes its TypeScript
+declarations; review generated changes before committing them.
 
 ## License
 

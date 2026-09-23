@@ -1,6 +1,6 @@
 {
   "name": "brace2",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Browserify-compatible Ace Editor with inlined Web Workers and TypeScript declarations",
   "main": "index.js",
   "types": "index.d.ts",
@@ -18,7 +18,9 @@
   "scripts": {
     "update": "(cd build && node ./update && node ./update-ts)",
     "build:test": "browserify test/error-annotations.js --debug --outfile test/bundle.js",
-    "test": "npm run build:test && opener test/index.html"
+    "test": "npm run build:test",
+    "test:browser": "npm test && opener test/index.html",
+    "prepack": "npm test"
   },
   "repository": {
     "type": "git",

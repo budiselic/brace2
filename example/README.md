@@ -1,9 +1,12 @@
-# brace example
+# brace2 example
 
-Please investigate the following to understand how to use brace:
- - the page itself containing `<div>` place holders for the editors: **index.html**
- - styles to position the editors: **index.css**
- - the browserify build script: **build.js**
- - the editor initialization scripts: **coffee-editor.js**, **javascript-editor.js**, **json-editor.js**,
-   **lua-editor.js** and **css-editor.js** (currently not used)
- - **coffee-editor.js** and **javascript-editor.js** also demonstrate Ace's Vim keybinding feature
+Install the example dependencies and create `bundle.js`:
+
+```sh
+npm install
+npm run build
+```
+
+Then open `index.html` in a browser. The example includes CoffeeScript,
+JavaScript, JSON, and Lua editors. The CoffeeScript and JavaScript editors also
+demonstrate Ace's Vim keybinding.
