@@ -26,7 +26,7 @@ var aceTag = 'v1.2.9';
 
   +function cloneFreshAndRemoveUnneeded() {
     rm('-rf', buildroot)
-    exec('git clone git://github.com/ajaxorg/ace-builds.git ' + buildroot);
+    exec('git clone https://github.com/ajaxorg/ace-builds.git ' + buildroot);
     exec('(cd ' + buildroot + ' && git pull && git checkout ' + aceTag + ')');
 
     [ 'demo', 'kitchen-sink', 'src-min', 'src', 'textarea' ]

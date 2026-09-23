@@ -1,7 +1,7 @@
-var ace = require('brace');
-require('brace/mode/javascript');
-require('brace/theme/monokai');
-require('brace/keybinding/vim');
+var ace = require('brace2');
+require('brace2/mode/javascript');
+require('brace2/theme/monokai');
+require('brace2/keybinding/vim');
 
 var editor = ace.edit('javascript-editor');
 editor.getSession().setMode('ace/mode/javascript');
